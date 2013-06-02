@@ -10,7 +10,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/psirenny/tok.git"
+  },
   "keywords": [
     "node",
     "token",
@@ -19,5 +22,6 @@
   ],
   "author": "psirenny",
   "license": "BSD",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "gitHead": "81e045adc9e12f4698a528a981910225902bd592"
 }
