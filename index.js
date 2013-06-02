@@ -19,7 +19,7 @@ module.exports = function (options) {
   }
 
   var getHash = function (id, date) {
-    id = _.isArray(id) ? id : [id];
+    if (!_.isArray(id)) id = _.isObject(id) ? _.values(id) : [id];
     id = _.chain(id).push(date).join('').value();
     return crypto.createHmac(options.hashAlgorithm, options.secretKey).update(id).digest('hex');
   };
