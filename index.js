@@ -44,7 +44,7 @@ module.exports = function (options) {
 
       options.load(id, function (err, dbToken) {
         if (err) return callback(err);
-        if (!dbToken) return callback('token invalid');
+        if (!dbToken) return callback('token not found');
         if (isExpired(dbToken)) return callback('token expired');
         if (token) return callback(token.hash === dbToken.hash ? null : 'token invalid');
         callback(dbToken.hash === getHash(id, dbToken.date) ? null : 'token invalid');
