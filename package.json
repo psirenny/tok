@@ -4,7 +4,7 @@
     "underscore": "*"
   },
   "name": "tok",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A simple token validation library for node",
   "main": "index.js",
   "scripts": {
