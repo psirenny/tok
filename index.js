@@ -3,8 +3,6 @@ var _ = require('underscore')
   , moment = require('moment');
 
 module.exports = function (options) {
-  options = options || {};
-
   _.defaults(options, {
       expiration: 3600000
     , hashAlgorithm: 'sha1'
@@ -15,7 +13,7 @@ module.exports = function (options) {
     throw 'must provide a secretKey';
   }
 
-  if (options.mode === 'store') {
+  if (options.mode !== 'hash') {
     if (!options.load) throw 'must provide a load() function';
     if (!options.save) throw 'must provide a save() function';
   }
@@ -34,27 +32,23 @@ module.exports = function (options) {
         return elapsed > options.expiration;
       };
 
-      switch (options.mode) {
-        case 'hash':
-          if (isExpired(token)) return callback('token expired');
-          callback(token.hash === getHash(id, token.date) ? null : 'token invalid');
-          break;
-        case 'store':
-          if (arguments.length < 3) {
-            callback = token;
-            token = null;
-          }
-
-          options.load(id, function (err, dbToken) {
-            if (err) return callback(err);
-            if (!dbToken) return callback('token invalid');
-            if (isExpired(dbToken)) return callback('token expired');
-            if (token) return callback(token.hash === dbToken.hash ? null : 'token invalid');
-            callback(dbToken.hash === getHash(id, dbToken.date) ? null : 'token invalid');
-          });
-
-          break;
+      if (options.mode === 'hash') {
+        if (isExpired(token)) return callback('token expired');
+        return callback(token.hash === getHash(id, token.date) ? null : 'token invalid');
       }
+
+      if (arguments.length < 3) {
+        callback = token;
+        token = null;
+      }
+
+      options.load(id, function (err, dbToken) {
+        if (err) return callback(err);
+        if (!dbToken) return callback('token invalid');
+        if (isExpired(dbToken)) return callback('token expired');
+        if (token) return callback(token.hash === dbToken.hash ? null : 'token invalid');
+        callback(dbToken.hash === getHash(id, dbToken.date) ? null : 'token invalid');
+      });
     }
     , create: function (id, callback) {
       var date = +new Date()
