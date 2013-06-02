@@ -69,13 +69,5 @@ module.exports = function (options) {
         callback(err, token);
       });
     }
-    , load: options.load
-    , save: function (id, callback) {
-      var date = +new Date()
-        , hash = getHash(id, date)
-        , token = {hash: hash, date: date};
-
-      options.save(id, token, callback);
-    }
   };
 }

@@ -1,4 +1,8 @@
 {
+  "dependencies": {
+    "moment": "*",
+    "underscore": "*"
+  },
   "name": "tok",
   "version": "0.0.0",
   "description": "A simple token validation library for node",
